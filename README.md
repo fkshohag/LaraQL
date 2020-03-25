@@ -94,9 +94,10 @@ use Shohag\Controllers\CoronaController;
 
 class DivisionController extends CoronaController
 {
-    public function __construct(Division $divisio)
+    // Model pass for dependacy injection purpose
+    public function __construct(Division $division)
     {
-        $this->EntityInstance = $divisio;
+        $this->EntityInstance = $division;
         parent::__construct(); 
     }
 }
@@ -105,7 +106,7 @@ class DivisionController extends CoronaController
 
 ## Documentation
 
-- [Usage Instructions](doc/01-usage.md)
+- 
 
 
 
@@ -114,14 +115,8 @@ class DivisionController extends CoronaController
 
 ### Requirements
 
-- Monolog 2.x works with PHP 7.2 or above, use Monolog `^1.0` for PHP 5.3+ support.
 
 ### Submitting bugs and feature requests
-
-Bugs and feature request are tracked on [GitHub](https://github.com/Seldaek/monolog/issues)
-
-### Framework Integrations
-
 
 
 ### Author
