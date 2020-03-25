@@ -10,7 +10,7 @@ use Shohag\Mixins\ModelMixins\QueryMixin;
  * @author Fazlul Kabir Shohag <shohag.fks@gmail.com>
  */
 
-class CoronaModels extends Model
+class CoronaModel extends Model
 {
     private $model;
     use QueryMixin;
