@@ -44,7 +44,7 @@ class Division extends CoronaModel implements CoronaVirus
      * @param NULL
      * @return Array
      */
-    public function serializerFields()
+    public function serializerFields(): array
     {
         return ['id', 'name','country_id', 'country__name'];
     }
@@ -53,7 +53,7 @@ class Division extends CoronaModel implements CoronaVirus
      * @param NULL
      * @return Array
      */
-    public function postSerializerFields()
+    public function postSerializerFields(): array
     {
         return ['name','country_id'];
     }
@@ -79,7 +79,7 @@ class Division extends CoronaModel implements CoronaVirus
             'direct_fields' => [
                 [
                 'level' => 'country',
-                'model' => Country::class, // country_id foreign of division table
+                'model' => Country::class, // country_id foreign key of division table
                 'fields' => ['id', 'name']
                 ]
             ]
@@ -163,7 +163,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     }
 }
 ```
-* divisions with single filter GET `api/divisions?filters=country_id:2`
+* divisions with single filter: GET `api/divisions?filters=country_id:2`
 * Response
 ```
 {
@@ -192,7 +192,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
-* divisions with multiple filter GET `api/divisions?filters=country_id:2,name:Khulna`
+* divisions with multiple filter: GET `api/divisions?filters=country_id:2,name:Khulna`
 * Response
 ```
 {
@@ -220,7 +220,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     }
 }
 ```
-* divisions like filter: `api/divisions?filters=country_id:2,like~name:ulna`
+* divisions like filter: GET `api/divisions?filters=country_id:2,like~name:ulna`
 * Response
 ```
 {
@@ -249,7 +249,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
-* divisions like,queryFields filter: `/api/divisions?filters=country_id:1,like~name:khu&queryFields=id,name`
+* divisions like,queryFields filter: GET `/api/divisions?filters=country_id:1,like~name:khu&queryFields=id,name`
 * Response
 ```
 {
@@ -277,7 +277,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
-* divisions like,queryFields with foreignkey filter: `/api/divisions?filters=country_id:1,name:Bangladesh&queryFields=id,name,county_id,country__name`
+* divisions like,queryFields with foreignkey filter: GET `/api/divisions?filters=country_id:1,name:Bangladesh&queryFields=id,name,county_id,country__name`
 * Response
 ```
 {
@@ -307,13 +307,47 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
+* divisions single resource create: POST: `/api/divisions`
+* body
+```
+{
+    "name": "Mymensingh",
+    "company_id": 1,
+}
+```
 
-## About
+* divisions bulk resource create: POST: `/api/divisions`
+* body
+```
+{
+	"bulks": [
+		{
+			"name": "Sylhet",
+			"country_id": 1,
+		},
+		{
+			"name": "Rajshahi",
+			"country_id": 1
+		}
+   ]
+}
+```
 
-### Requirements
-
-
-### Submitting bugs and feature requests
+* divisions create: GET: `/api/divisions/create`
+* Response
+```
+// Model createSerializer() method will be work here
+{
+    "data": {
+        "country": [
+            {
+                "id": 1,
+                "name": "Bangladesh"
+            }
+        ]
+    }
+}
+```
 
 
 ### Author
