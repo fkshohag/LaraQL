@@ -1,0 +1,19 @@
+{
+    "name": "shohag/coronapi",
+    "description": "Corona Virus api",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fazlul Kabir Shohag",
+            "email": "shohag.fks@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Shohag\\": ["src/"]
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
