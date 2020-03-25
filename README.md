@@ -80,10 +80,11 @@ class Division extends CoronaModels implements CoronaVirus
     }
 
 }
+?>
 ```
 
 ## Basic Controller Usage
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
