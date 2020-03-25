@@ -4,7 +4,7 @@ At this time we are struggling to survive our life against coronavirus by stayin
 
 Laravel API resource is a fantastic feature to make REST API.  We are using it to transform eloquent models to  json responses.
 
-We know every resource route give us seven individual api link and their work is almost similar for every resource. I have make it more generic by using a wrapper So how it will work on?
+We know every resource route give us seven individual api link and their work is almost similar for every resource. I have made it more generic by using a wrapper!
 
 
 ## Installation
