@@ -3,6 +3,7 @@
 namespace Shohag\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Shohag\Mixins\ModelMixins\QueryMixin;
 
@@ -33,9 +34,38 @@ class CoronaModel extends Model
             array_merge($query_result, $serializerConfig['other_fields']) : $query_result;
     }
 
+    public function bulkCreate($request) {
+        $EntityModel = $this->model;
+        $bulks = $request->bulks;
+        $tableName =  $EntityModel->getTable();
+        $ids = [];
+        if(!empty($bulks)) {
+            DB::beginTransaction();
+            foreach($bulks as $resource) {
+                $ids[] = DB::table($tableName)->insertGetId($resource);
+            }
+            DB::commit();
+        }
+        if($ids) {
+            return response()->json(['data' => $EntityModel::whereIn('id', $ids)->get()], 200);
+  
+        } else {
+            return response()->json(['data' => []], 200);
+        }
+    }
+
     function storeResource($request) {
         $EntityModel = $this->model;
         $fields = $EntityModel->postSerializerFields();
+
+        // bulk create
+        if($request->bulks) {
+            if(method_exists($EntityModel, 'fieldsValidator')) {
+                $validator = Validator::make($request->bulks[0], $EntityModel->fieldsValidator());
+                if ($validator->fails()) return response()->json(['errors' => $validator->messages()]);
+            }
+            return $this->bulkCreate($request);
+        }
 
         if(method_exists($EntityModel, 'fieldsValidator')) {
             $validator = Validator::make($request->all(), $EntityModel->fieldsValidator());
