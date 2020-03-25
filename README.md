@@ -128,9 +128,184 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 ## Documentation
 
-- 
+-- Our API is ready to access so, in the below section will be describe how it will help us!.
 
+* divisions GET `/api/divisions`
+* Response
+```
+{
+    "data": [
+        {
+            "id": 3,
+            "name": "Dhaka",
+            "country_id": 1,
+        },
+        {
+            "id": 2,
+            "name": "Khulna",
+            "country_id": 2,
+        }
+    ],
+    "links": {
+        "first": "http://127.0.0.1:8002/api/divisions?page=1",
+        "last": "http://127.0.0.1:8002/api/divisions?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://127.0.0.1:8002/api/divisions",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
+    }
+}
+```
+* divisions with single filter GET `api/divisions?filters=country_id:2`
+* Response
+```
+{
+    "data": [
+        {
+            "id": 2,
+            "name": "Khulna",
+            "country_id": 2,
+        }
+    ],
+    "links": {
+        "first": "http://127.0.0.1:8002/api/divisions?page=1",
+        "last": "http://127.0.0.1:8002/api/divisions?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://127.0.0.1:8002/api/divisions",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
+    }
+}
+```
 
+* divisions with multiple filter GET `api/divisions?filters=country_id:2,name:Khulna`
+* Response
+```
+{
+    "data": [
+        {
+            "id": 2,
+            "name": "Khulna",
+            "country_id": 2,
+        }
+    ],
+    "links": {
+        "first": "http://127.0.0.1:8002/api/divisions?page=1",
+        "last": "http://127.0.0.1:8002/api/divisions?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://127.0.0.1:8002/api/divisions",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
+    }
+}
+```
+* divisions like filter: `api/divisions?filters=country_id:2,like~name:ulna`
+* Response
+```
+{
+    "data": [
+        {
+            "id": 2,
+            "name": "Khulna",
+            "country_id": 2,
+        }
+    ],
+    "links": {
+        "first": "http://127.0.0.1:8002/api/divisions?page=1",
+        "last": "http://127.0.0.1:8002/api/divisions?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://127.0.0.1:8002/api/divisions",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
+    }
+}
+```
+
+* divisions like,queryFields filter: `/api/divisions?filters=country_id:1,like~name:khu&queryFields=id,name`
+* Response
+```
+{
+    "data": [
+        {
+            "id": 2,
+            "name": "Khulna",
+        }
+    ],
+    "links": {
+        "first": "http://127.0.0.1:8002/api/divisions?page=1",
+        "last": "http://127.0.0.1:8002/api/divisions?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://127.0.0.1:8002/api/divisions",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
+    }
+}
+```
+
+* divisions like,queryFields with foreignkey filter: `/api/divisions?filters=country_id:1,name:Bangladesh&queryFields=id,name,county_id,country__name`
+* Response
+```
+{
+    "data": [
+        {
+            "id": 2,
+            "name": "Khulna",
+            "country_id": 1,
+            "country_name": "Bangladesh"
+        }
+    ],
+    "links": {
+        "first": "http://127.0.0.1:8002/api/divisions?page=1",
+        "last": "http://127.0.0.1:8002/api/divisions?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://127.0.0.1:8002/api/divisions",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
+    }
+}
+```
 
 
 ## About
