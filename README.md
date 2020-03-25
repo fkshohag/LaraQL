@@ -320,16 +320,17 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 * body
 ```
 {
-	"bulks": [
-		{
-			"name": "Sylhet",
-			"country_id": 1,
-		},
-		{
-			"name": "Rajshahi",
-			"country_id": 1
-		}
-   ]
+  "bulks": [
+    {
+      "name": "Sylhet",
+      "country_id": 1,
+      
+    },
+    {
+      "name": "Rajshahi",
+      "country_id": 1
+    }
+  ]
 }
 ```
 
