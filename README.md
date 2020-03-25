@@ -15,7 +15,7 @@ Install the latest version with
 $ composer require coronapi/generic
 ```
 
-## Basic Usage Model
+## Basic Model Usage
 
 ```php
 <?php
@@ -80,6 +80,26 @@ class Division extends CoronaModels implements CoronaVirus
     }
 
 }
+```
+
+## Basic Controller Usage
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Division;
+use Shohag\Controllers\CoronaController;
+
+class DivisionController extends CoronaController
+{
+    public function __construct(Division $divisio)
+    {
+        $this->EntityInstance = $divisio;
+        parent::__construct(); 
+    }
+}
+
 ```
 
 ## Documentation
