@@ -23,9 +23,9 @@ $ composer require coronapi/generic
 namespace App\Models;
 
 use Shohag\Interfaces\CoronaVirus;
-use Shohag\Models\CoronaModels;
+use Shohag\Models\CoronaModel;
 
-class Division extends CoronaModels implements CoronaVirus
+class Division extends CoronaModel implements CoronaVirus
 {
   
     public function __construct()
