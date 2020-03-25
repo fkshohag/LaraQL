@@ -32,6 +32,13 @@ class Division extends CoronaModels implements CoronaVirus
     {
         parent::__construct($this);
     }
+    /**
+     * @param NULL
+     * @return $mixin
+     */
+    public function country() {
+        return $this->belongsTo(Country::class, 'country_id', 'id')->select(['id', 'name']);
+    } 
 
     /**
      * @param NULL
@@ -39,7 +46,7 @@ class Division extends CoronaModels implements CoronaVirus
      */
     public function serializerFields()
     {
-        return ['id', 'name','country_id'];
+        return ['id', 'name','country_id', 'country__name'];
     }
 
     /**
@@ -72,7 +79,7 @@ class Division extends CoronaModels implements CoronaVirus
             'direct_fields' => [
                 [
                 'level' => 'country',
-                'model' => Country::class, // Division is depend on country 
+                'model' => Country::class, // country_id foreign of division table
                 'fields' => ['id', 'name']
                 ]
             ]
@@ -101,6 +108,21 @@ class DivisionController extends CoronaController
         parent::__construct(); 
     }
 }
+
+```
+
+## Basic Route Usage
+```
+Route::resource('/divisions', 'DivisionController');
+
+Verb          Path                        Action  Route Name
+GET           /divisions                   index   divisions.index
+GET           /divisions/create            create  divisions.create
+POST          /divisions                   store   divisions.store
+GET           /divisions/{id}              show    divisions.show
+GET           /divisions/{id}/edit         edit    divisions.edit
+PUT|PATCH     /divisions/{id}              update  divisions.update
+DELETE        /divisions/{id}              destroy divisions.destroy
 
 ```
 
