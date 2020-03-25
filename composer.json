@@ -1,5 +1,5 @@
 {
-    "name": "shohag/coronapi",
+    "name": "coronapi/generic",
     "description": "Corona Virus api",
     "type": "library",
     "license": "MIT",
