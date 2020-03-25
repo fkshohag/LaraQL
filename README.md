@@ -1,39 +1,85 @@
-# Monolog - Logging for PHP [![Build Status]
+# Corona Generic API
 
-Monolog sends your logs to files, sockets, inboxes, databases and various
-web services. See the complete list of handlers below. Special handlers
-allow you to build advanced logging strategies.
+At this time we are struggling to survive our life against coronavirus by staying at home. That is the reason why I named this package Corona Generic api.
 
-This library implements the [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
-interface that you can type-hint against in your own libraries to keep
-a maximum of interoperability. You can also use it in your applications to
-make sure you can always use another compatible logger at a later time.
-As of 1.11.0 Monolog public APIs will also accept PSR-3 log levels.
-Internally Monolog still uses its own level scheme since it predates PSR-3.
+Laravel API resource is a fantastic feature to make REST API.  We are using it to transform eloquent models to  json responses.
+
+We know every resource route give us seven individual api link and their work is almost similar for every resource. I have make it more generic by using a wrapper So how it will work on?
+
 
 ## Installation
 
 Install the latest version with
 
 ```bash
-$ composer require monolog/monolog
+$ composer require coronapi/generic
 ```
 
-## Basic Usage
+## Basic Usage Model
 
 ```php
 <?php
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+namespace App\Models;
 
-// create a log channel
-$log = new Logger('name');
-$log->pushHandler(new StreamHandler('path/to/your.log', Logger::WARNING));
+use Shohag\Interfaces\CoronaVirus;
+use Shohag\Models\CoronaModels;
 
-// add records to the log
-$log->warning('Foo');
-$log->error('Bar');
+class Division extends CoronaModels implements CoronaVirus
+{
+  
+    public function __construct()
+    {
+        parent::__construct($this);
+    }
+
+    /**
+     * @param NULL
+     * @return Array
+     */
+    public function serializerFields()
+    {
+        return ['id', 'name','country_id'];
+    }
+
+    /**
+     * @param NULL
+     * @return Array
+     */
+    public function postSerializerFields()
+    {
+        return ['name','country_id'];
+    }
+
+    /**
+     * @param NULL
+     * @return Array
+     */
+    public function fieldsValidator()
+    {
+        return [
+            'name' => 'required',
+            'country_id' => 'required'
+        ];
+    }
+
+     /**
+     * @param NULL
+     * @return Array
+     */
+    public function createSerializer() {
+        return [
+            'direct_fields' => [
+                [
+                'level' => 'country',
+                'model' => Country::class, // Division is depend on country 
+                'fields' => ['id', 'name']
+                ]
+            ]
+        ];
+    }
+
+}
 ```
 
 ## Documentation
