@@ -407,7 +407,7 @@ protected $one2manyFields = [
             [
                 'field' => 'code',
                 'method' => function($fieldValue) {
-                    return strtoupper($fieldValue);
+                    return (int)$fieldValue;
                 }
             ],
             [
