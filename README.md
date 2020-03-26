@@ -269,7 +269,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 ```
 
 * one to many data insert: POST: `/api/type`
-### Add this property in desire model ```json protected $one2manyFields = [
+### Add this property in desire model ```json
+protected $one2manyFields = [
         [
             'relation_id'=> 'division_id',   
             'associate_with' => 'divisions', 
