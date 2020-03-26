@@ -1,10 +1,8 @@
-# Corona Generic API
-
-At this time we are struggling to survive our life against coronavirus by staying at home. That is the reason why I named this package Corona Generic api.
+# LaraQL
 
 Laravel API resource is a fantastic feature to make REST API.  We are using it to transform eloquent models to  json responses.
 
-We know every resource route give us seven individual api link and their work is almost similar for every resource. I have made it more generic by using a wrapper!
+We know every resource route give us seven individual api link and their work is almost similar. I have made it more generic by using a wrapper!
 
 
 ## Installation
@@ -12,7 +10,7 @@ We know every resource route give us seven individual api link and their work is
 Install the latest version with
 
 ```bash
-$ composer require coronapi/generic
+$ composer require shohag-laraql/lara-ql
 ```
 
 ## Basic Model Usage
@@ -34,7 +32,7 @@ class Division extends CoronaModel implements CoronaVirus
     protected $one2oneFields = [
         [
             'self_key' => 'country_id', // current table foreign key
-            'associate_with' => 'country', // request key
+            'associate_with' => 'country', // request field
             'relative_model' => Country::class // relative model 
         ]
     ];
@@ -74,7 +72,7 @@ class Division extends CoronaModel implements CoronaVirus
      * @param NULL
      * @return Array
      */
-    public function fieldsValidator()
+    public function fieldsValidator(): array
     {
         return [
             'name' => 'required',
@@ -86,7 +84,8 @@ class Division extends CoronaModel implements CoronaVirus
      * @param NULL
      * @return Array
      */
-    public function createSerializer() {
+    public function createSerializer(): array
+    {
         return [
             'direct_fields' => [
                 [
@@ -94,6 +93,22 @@ class Division extends CoronaModel implements CoronaVirus
                 'model' => Country::class, // country_id foreign key of division table
                 'fields' => ['id', 'name']
                 ]
+            ]
+        ];
+    }
+    
+     /**
+     * @param NULL
+     * @return array
+     */
+    public function fieldMutation()
+    {
+        return [
+            [
+                'field' => 'name',
+                'method' => function($fieldValue) {
+                    return strtoupper($fieldValue);
+                }
             ]
         ];
     }
@@ -113,7 +128,6 @@ use Shohag\Controllers\CoronaController;
 
 class DivisionController extends CoronaController
 {
-    // Model pass for dependacy injection purpose
     public function __construct(Division $division)
     {
         $this->EntityInstance = $division;
