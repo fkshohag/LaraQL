@@ -257,8 +257,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 ```
 
 * division with country create(one to one relation data insert): POST: `/api/divisions`
+### Before you do this make sure you removed country_id from validation method and added $one2oneFields property in model
 * body
-### Before you do this make sure you removed country_id from validation method and added $one2oneFields propery in model
 ```json
 {
 	"name": "Rajshahi",
@@ -269,7 +269,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 ```
 
 * one to many data insert: POST: `/api/type`
-### Add this property in desire model ```json
+### Add this property in desire model 
+```
 protected $one2manyFields = [
         [
             'relation_id'=> 'division_id',   
