@@ -278,7 +278,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 {
 	"name": "Rajshahi",
 	"country": {
-		"name": "India"
+		"name": "Bangladesh"
 	}
 }
 ```
