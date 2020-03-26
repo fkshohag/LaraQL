@@ -161,7 +161,13 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 	- [Controller Usage](#controller-usage)
 	- [Route Usage](#route-usage)
   - [Documentation:](#documentation)
-  	- [Filter](#filter)
+	- [Without Filter](#without-filter)
+	- [Filter](#filter)
+	  - [Single Filter](#single-filter)
+	  - [Multiple Filter](#multiple-filter)
+	  - [Like Filter](#like-filter)
+	  - [Between Filter](#between-Filter)
+	- [Query Fields](#query-fields)
   
       
       
@@ -169,9 +175,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 # Documentation
 
-## Filter
--- Our API is ready to access so, in the below section will be describe how it will help us!.
-
+# Without Filter
 * divisions GET `/api/divisions`
 * Response
 ```json
@@ -190,6 +194,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
+# Single Filter
 * divisions with single filter: GET `api/divisions?filters=country_id:2`
 * Response
 ```json
@@ -203,7 +208,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
+# Multiple Filter
 * divisions with multiple filter: GET `api/divisions?filters=country_id:2,name:Khulna`
 * Response
 ```json
