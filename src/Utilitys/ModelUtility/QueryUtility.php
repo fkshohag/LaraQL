@@ -2,8 +2,6 @@
 
 namespace Shohag\Utilitys\ModelUtility;
 
-use App\GenericSolution\GenericModelFields\Fields;
-
 /**
  * @author Md.Shohag <Shohag.fks@gmail.com>
  */

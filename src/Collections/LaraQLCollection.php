@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  * @author Fazlul Kabir Shohag <shohag.fks@gmail.com>
  */
 
-class CoronaCollection extends ResourceCollection
+class LaraQLCollection extends ResourceCollection
 {
 
     private $serializerFields = [];

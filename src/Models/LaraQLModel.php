@@ -11,7 +11,7 @@ use Shohag\Utilitys\ModelUtility\QueryUtility;
  * @author Fazlul Kabir Shohag <shohag.fks@gmail.com>
  */
 
-class CoronaModel extends Model
+class LaraQLModel extends Model
 {
     private $model;
     use QueryMixin, QueryUtility;
@@ -40,6 +40,17 @@ class CoronaModel extends Model
         $fields = $EntityModel->postSerializerFields();
         $requestFields = $request->all();
 
+        // Field resolver
+        if(method_exists($EntityModel, 'fieldMutation')) {
+            $resolverFields = $this->fieldMutation();
+            foreach($resolverFields as $resolver) {
+                if(isset($requestFields[$resolver['field']])) {
+                    $requestFields[$resolver['field']] = $resolver['method']($requestFields[$resolver['field']]);
+                }
+            }
+        }
+
+
         // bulk create
         if($request->bulks) {
             if(method_exists($EntityModel, 'fieldsValidator')) {
@@ -56,8 +67,8 @@ class CoronaModel extends Model
     
         $resource = new $EntityModel();
         foreach ($fields as $field) {
-            if(isset($request->$field)) {
-                $resource->$field = $request->$field;
+            if(isset($requestFields[$field])) {
+                $resource->$field = $requestFields[$field];
             }
         }
 

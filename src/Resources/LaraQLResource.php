@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @author Fazlul Kabir Shohag <shohag.fks@gmail.com>
  */
-class CoronaResource extends JsonResource
+class LaraQLResource extends JsonResource
 {
     private $serializerFields = null;
 
