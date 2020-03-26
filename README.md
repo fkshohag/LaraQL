@@ -13,7 +13,7 @@ Install the latest version with
 $ composer require shohag-laraql/lara-ql
 ```
 
-## Basic Model Usage
+## Model Usage
 
 ```php
 <?php
@@ -117,7 +117,7 @@ class Division extends CoronaModel implements CoronaVirus
 ?>
 ```
 
-## Basic Controller Usage
+## Controller Usage
 ```php
 <?php
 
@@ -137,7 +137,7 @@ class DivisionController extends CoronaController
 
 ```
 
-## Basic Route Usage
+## Route Usage
 ```
 Route::resource('/divisions', 'DivisionController');
 
@@ -155,8 +155,13 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 ## Usage
 
 - [LaraQL](#laraql)
-- [Installation](#installation)
       - [Installation:](#installation)
+      - [Usage:](#usage)
+	   - [Model Usage](#model-usage)
+	   - [Controller Usage](#controller-usage)
+	   - [Route Usage](#route-usage)
+      
+      
 
 
 ## Documentation
