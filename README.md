@@ -160,12 +160,16 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 	- [Model Usage](#model-usage)
 	- [Controller Usage](#controller-usage)
 	- [Route Usage](#route-usage)
+  - [Documentation:](#documentation)
+  	- [Filter](#filter)
+  
       
       
 
 
-## Documentation
+# Documentation
 
+## Filter
 -- Our API is ready to access so, in the below section will be describe how it will help us!.
 
 * divisions GET `/api/divisions`
