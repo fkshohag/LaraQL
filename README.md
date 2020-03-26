@@ -168,6 +168,12 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 	  - [Like Filter](#like-filter)
 	  - [Between Filter](#between-Filter)
 	- [Query Fields](#query-fields)
+	  - [Foreignkey Fields](#foreignkey-fields)
+	- [Order By](#order-by)
+	- [Resource Post](#resource-post)
+	  - [Bulk Post](#bulk-post)
+	  - [One To One](#one-to-one)
+	- [Field Mutation](#field-mutation)
   
       
       
