@@ -256,6 +256,34 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
+* division with country create(one to one relation data insert): POST: `/api/divisions`
+* body
+### Before you do this make sure you removed country_id from validation method and added $one2oneFields propery in model
+```json
+{
+	"name": "Rajshahi",
+	"country": {
+		"name": "Bangladesh"
+	}
+}
+```
+
+* one to many data insert: POST: `/api/type`
+* body
+```json
+{
+	"name": "Division",
+	"items": [
+		{
+		  "name": "sub division"
+		},
+		{
+		  "name": "super division"
+		}
+	]
+}
+```
+
 * divisions create: GET: `/api/divisions/create`
 * Response
 ```
@@ -270,18 +298,6 @@ DELETE        /divisions/{id}              destroy divisions.destroy
         ]
     }
 }
-```
-* country with division create(one to one relation data insert): GET: `/api/divisions/create`
-* body
-### Before you do this make sure you removed country_id from validation method and added $one2oneFields propery in model
-```json
-{
-	"name": "Rajshahi",
-	"country": {
-		"name": "Bangladesh"
-	}
-}
-```
 
 ### Author
 
