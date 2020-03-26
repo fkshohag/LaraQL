@@ -1,6 +1,8 @@
 <?php
 
 namespace Shohag\Mixins\ModelMixins;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @author Md.Shohag <Shohag.fks@gmail.com>
@@ -103,5 +105,31 @@ Trait QueryMixin {
     {
         $resource = $this->model::find($id);
         return $resource;
+    }
+
+    public function bulkCreate($request) {
+        $EntityModel = $this->model;
+        $bulks = $request->bulks;
+        $tableName =  $EntityModel->getTable();
+        $ids = [];
+        if(!empty($bulks)) {
+            DB::beginTransaction();
+            foreach($bulks as $resource) {
+                $ids[] = DB::table($tableName)->insertGetId($resource);
+            }
+            DB::commit();
+        }
+        if($ids) {
+            return response()->json(['data' => $EntityModel::whereIn('id', $ids)->get()], 200);
+  
+        } else {
+            return response()->json(['data' => []], 200);
+        }
+    }
+
+    public function validatorChecker($_request, $v_fields) {
+        $validator = Validator::make($_request, $v_fields);
+        if ($validator->fails()) return response()->json(['errors' => $validator->messages()]);
+        return false;
     }
 }

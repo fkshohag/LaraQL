@@ -3,9 +3,9 @@
 namespace Shohag\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Shohag\Mixins\ModelMixins\QueryMixin;
+use Shohag\Utilitys\ModelUtility\QueryUtility;
 
 /**
  * @author Fazlul Kabir Shohag <shohag.fks@gmail.com>
@@ -14,7 +14,7 @@ use Shohag\Mixins\ModelMixins\QueryMixin;
 class CoronaModel extends Model
 {
     private $model;
-    use QueryMixin;
+    use QueryMixin, QueryUtility;
 
     public $clientQueryFields = array();
 
@@ -34,29 +34,11 @@ class CoronaModel extends Model
             array_merge($query_result, $serializerConfig['other_fields']) : $query_result;
     }
 
-    public function bulkCreate($request) {
-        $EntityModel = $this->model;
-        $bulks = $request->bulks;
-        $tableName =  $EntityModel->getTable();
-        $ids = [];
-        if(!empty($bulks)) {
-            DB::beginTransaction();
-            foreach($bulks as $resource) {
-                $ids[] = DB::table($tableName)->insertGetId($resource);
-            }
-            DB::commit();
-        }
-        if($ids) {
-            return response()->json(['data' => $EntityModel::whereIn('id', $ids)->get()], 200);
-  
-        } else {
-            return response()->json(['data' => []], 200);
-        }
-    }
 
     function storeResource($request) {
         $EntityModel = $this->model;
         $fields = $EntityModel->postSerializerFields();
+        $requestFields = $request->all();
 
         // bulk create
         if($request->bulks) {
@@ -79,7 +61,60 @@ class CoronaModel extends Model
             }
         }
 
+        // one to one field data insert
+        foreach($requestFields as $key => $field) {
+            if(is_object($field) || is_array($field)) {
+                $f_indx = $this->getOne2OneFieldIndex($key);
+                if($f_indx > -1) {
+                    $relative = $this->one2oneFields[$f_indx];
+                    if(method_exists($relative['relative_model'], 'fieldsValidator')){
+                        $newInstance = new $relative['relative_model'];
+                        $v_fields = $newInstance->fieldsValidator();
+                        $cheker = $this->validatorChecker($field, $v_fields);
+                        if($cheker) {
+                           return $cheker; 
+                        } else {
+                            $r_fields = $newInstance->postSerializerFields();
+                            foreach ($r_fields as $_field) {
+                                if(isset($field[$_field])) {
+                                    $newInstance->$_field = $field[$_field];
+                                }
+                            }
+                            $newInstance->save();
+                            $f_key = $relative['self_key'];
+                            $resource->$f_key = $newInstance->id; 
+                        }
+                    }
+                }
+            }
+        }
+
         $resource->save();
+        
+        // one to many field data insert
+        foreach($requestFields as $key => $field) {
+            if(is_object($field) || is_array($field)) {
+                $f_indx = $this->getOne2ManyFieldIndex($key);
+                if($f_indx > -1) {
+                    $relative = $this->one2manyFields[$f_indx];
+                    if(method_exists($relative['relative_model'], 'fieldsValidator')){
+                        $newInstance = new $relative['relative_model'];
+                        $v_fields = $newInstance->fieldsValidator();
+                        $cheker = $this->validatorChecker($field[0], $v_fields);
+                        if($cheker) {
+                           return $cheker; 
+                        } else {
+                            foreach($field as $idx => $_f) {
+                                $_f['division_id'] = 3;
+                                $field[$idx] = $_f; 
+                            }
+                            $relative['relative_model']::insert($field);
+                        }
+                    }
+                }
+            }
+        }
+
         $resource = $EntityModel::find($resource->id);
         return $resource;
     }
