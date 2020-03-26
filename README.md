@@ -27,11 +27,23 @@ use Shohag\Models\CoronaModel;
 
 class Division extends CoronaModel implements CoronaVirus
 {
+
+    /**
+     * @var one to one model relation
+    */
+    protected $one2oneFields = [
+        [
+            'self_key' => 'country_id', // current table foreign key
+            'associate_with' => 'country', // request key
+            'relative_model' => Country::class // relative model 
+        ]
+    ];
   
     public function __construct()
     {
         parent::__construct($this);
     }
+    
     /**
      * @param NULL
      * @return $mixin
@@ -219,7 +231,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 * divisions single resource create: POST: `/api/divisions`
 * body
-```
+```json
 {
     "name": "Mymensingh",
     "company_id": 1,
@@ -228,7 +240,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 * divisions bulk resource create: POST: `/api/divisions`
 * body
-```
+```json
 {
   "bulks": [
     {
@@ -259,7 +271,17 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     }
 }
 ```
-
+* country with division create(one to one relation data insert): GET: `/api/divisions/create`
+* body
+### Before you do this make sure you removed country_id from validation method and added $one2oneFields propery in model
+```json
+{
+	"name": "Rajshahi",
+	"country": {
+		"name": "India"
+	}
+}
+```
 
 ### Author
 
