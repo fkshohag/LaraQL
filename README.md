@@ -20,10 +20,10 @@ $ composer require shohag-laraql/lara-ql
 
 namespace App\Models;
 
-use Shohag\Interfaces\CoronaVirus;
-use Shohag\Models\CoronaModel;
+use Shohag\Interfaces\LaraQLSerializer;
+use Shohag\Models\LaraQLModel;
 
-class Division extends CoronaModel implements CoronaVirus
+class Division extends LaraQLModel implements LaraQLSerializer
 {
 
     /**
@@ -101,7 +101,7 @@ class Division extends CoronaModel implements CoronaVirus
      * @param NULL
      * @return array
      */
-    public function fieldMutation()
+    public function fieldMutation(): array
     {
         return [
             [
@@ -124,9 +124,9 @@ class Division extends CoronaModel implements CoronaVirus
 namespace App\Http\Controllers;
 
 use App\Models\Division;
-use Shohag\Controllers\CoronaController;
+use Shohag\Controllers\LaraQLController;
 
-class DivisionController extends CoronaController
+class DivisionController extends LaraQLController
 {
     public function __construct(Division $division)
     {
@@ -228,6 +228,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
+# Like Filter
 * divisions like filter: GET `api/divisions?filters=country_id:2,like~name:ulna`
 * Response
 ```json
@@ -241,8 +242,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions like,queryFields filter: GET `/api/divisions?filters=country_id:1,like~name:khu&queryFields=id,name`
+# Query Fields
+* divisions like,queryFields filter: GET `/api/divisions?queryFields=id,name`
 * Response
 ```json
 {
@@ -254,7 +255,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
+# Between Filter
 * divisions between filter: GET `/api/countries?filters=b2n_id:1-3`
 * Response
 ```json
@@ -275,7 +276,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
+## Order By
 * divisions between filter with order_by: GET `/api/countries?filters=b2n_id:1-3&queryFields=id,name&order_by=asc`
 * Response
 ```json
@@ -296,8 +297,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions like,queryFields with foreignkey filter: GET `/api/divisions?filters=country_id:1,name:Bangladesh&queryFields=id,name,county_id,country__name`
+### ForeignKey Fields
+* Foreignkey queryFields: GET `/api/divisions?queryFields=country__name`
 * Response
 ```json
 {
@@ -311,8 +312,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions single resource create: POST: `/api/divisions`
+# Resource Post
+* new resource create: POST: `/api/divisions`
 * body
 ```json
 {
@@ -320,8 +321,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     "company_id": 1,
 }
 ```
-
-* divisions bulk resource create: POST: `/api/divisions`
+# Bulk Post
+* new bulk resource create: POST: `/api/divisions`
 * body
 ```json
 {
@@ -338,7 +339,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
   ]
 }
 ```
-
+# One to one
 * division with country create(one to one relation data insert): POST: `/api/divisions`
 ### Before you do this make sure you removed country_id from validation method and added $one2oneFields property in model
 * body
