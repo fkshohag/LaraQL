@@ -244,7 +244,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 # Query Fields
-* divisions like,queryFields filter: GET `/api/divisions?queryFields=id,name`
+* queryFields filter(only desire fields retrive): GET `/api/divisions?queryFields=id,name`
 * Response
 ```json
 {
@@ -257,7 +257,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 # Between Filter
-* divisions between filter: GET `/api/countries?filters=b2n_id:1-3`
+* between filter(range 1 to 3): GET `/api/countries?filters=b2n_id:1-3`
 * Response
 ```json
 {
@@ -278,7 +278,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 ## Order By
-* divisions between filter with order_by: GET `/api/countries?filters=b2n_id:1-3&queryFields=id,name&order_by=asc`
+* filter with order_by: GET `/api/countries?filters=b2n_id:1-3&queryFields=id,name&order_by=asc`
 * Response
 ```json
 {
@@ -299,7 +299,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 ### ForeignKey Fields
-* Foreignkey queryFields: GET `/api/divisions?queryFields=country__name`
+* Foreignkey queryFields(desire foreignkey field retrive): GET `/api/divisions?queryFields=country__name`
 * Response
 ```json
 {
@@ -355,7 +355,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 # One To Many
 * one to many data insert: POST: `/api/type`
-### Add this property in desire model 
+### Add $one2manyFields property in model 
 ```
 protected $one2manyFields = [
         [
@@ -425,5 +425,5 @@ Fazlul Kabir Shohag - <shohag.fks@gmail.com>
 
 ### License
 
-Corona Generic API package is licensed under the MIT License
+LaraQL package is licensed under the MIT License
 
