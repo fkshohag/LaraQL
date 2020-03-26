@@ -154,7 +154,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 ## Usage
 
-- [LaraQL](#lara-ql)
+- [LaraQL](#laraql)
 
 
 ## Documentation
