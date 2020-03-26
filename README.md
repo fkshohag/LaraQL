@@ -152,6 +152,11 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 ```
 
+## Usage
+
+- [LaraQL](#lara-ql)
+
+
 ## Documentation
 
 -- Our API is ready to access so, in the below section will be describe how it will help us!.
