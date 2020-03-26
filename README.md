@@ -214,6 +214,48 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
+* divisions between filter: GET `/api/countries?filters=b2n_id:1-3`
+* Response
+```json
+{
+    "data": [
+        {
+            "id": 3,
+            "name": "India"
+        },
+        {
+            "id": 2,
+            "name": "India"
+        },
+        {
+            "id": 1,
+            "name": "Bangladesh"
+        }
+    ]
+}
+```
+
+* divisions between filter with order_by: GET `/api/countries?filters=b2n_id:1-3&queryFields=id,name&order_by=asc`
+* Response
+```json
+{
+    "data": [
+       {
+            "id": 1,
+            "name": "Bangladesh"
+        },
+        {
+            "id": 2,
+            "name": "India"
+        },
+        {
+            "id": 3,
+            "name": "India"
+        }
+    ]
+}
+```
+
 * divisions like,queryFields with foreignkey filter: GET `/api/divisions?filters=country_id:1,name:Bangladesh&queryFields=id,name,county_id,country__name`
 * Response
 ```json
