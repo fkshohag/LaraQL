@@ -173,6 +173,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 	- [Resource Post](#resource-post)
 	  - [Bulk Post](#bulk-post)
 	  - [One To One](#one-to-one)
+	  - [One To Many](#one-to-many)
 	- [Field Mutation](#field-mutation)
   
       
@@ -352,6 +353,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
+# One To Many
 * one to many data insert: POST: `/api/type`
 ### Add this property in desire model 
 ```
@@ -392,7 +394,31 @@ protected $one2manyFields = [
         ]
     }
 }
-
+```
+# Field Mutation
+```php
+   /**
+   * @param NULL
+   * @return array
+   */
+    public function fieldMutation()
+    {
+        return [
+            [
+                'field' => 'code',
+                'method' => function($fieldValue) {
+                    return strtoupper($fieldValue);
+                }
+            ],
+            [
+                'field' => 'name',
+                'method' => function($fieldValue) {
+                    return strtoupper($fieldValue);
+                }
+            ]
+        ];
+    }
+```
 ### Author
 
 Fazlul Kabir Shohag - <shohag.fks@gmail.com>
