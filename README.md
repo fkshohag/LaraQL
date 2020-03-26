@@ -155,11 +155,11 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 ## Usage
 
 - [LaraQL](#laraql)
-      - [Installation:](#installation)
-      - [Usage:](#usage)
-	   - [Model Usage](#model-usage)
-	   - [Controller Usage](#controller-usage)
-	   - [Route Usage](#route-usage)
+  - [Installation:](#installation)
+  - [Usage:](#usage)
+	- [Model Usage](#model-usage)
+	- [Controller Usage](#controller-usage)
+	- [Route Usage](#route-usage)
       
       
 
