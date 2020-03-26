@@ -1,6 +1,6 @@
 {
     "name": "shohag-laraql/lara-ql",
-    "description": "Corona Virus api",
+    "description": "LaraQL is GraphQL similar package for laravel",
     "type": "library",
     "license": "MIT",
     "authors": [
