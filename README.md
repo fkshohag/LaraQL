@@ -1,10 +1,8 @@
-# Corona Generic API
-
-At this time we are struggling to survive our life against coronavirus by staying at home. That is the reason why I named this package Corona Generic api.
+# LaraQL
 
 Laravel API resource is a fantastic feature to make REST API.  We are using it to transform eloquent models to  json responses.
 
-We know every resource route give us seven individual api link and their work is almost similar for every resource. I have made it more generic by using a wrapper!
+We know every resource route give us seven individual api link and their work is almost similar. I have made it more generic by using a wrapper!
 
 
 ## Installation
@@ -12,20 +10,20 @@ We know every resource route give us seven individual api link and their work is
 Install the latest version with
 
 ```bash
-$ composer require coronapi/generic
+$ composer require shohag-laraql/lara-ql
 ```
 
-## Basic Model Usage
+## Model Usage
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Shohag\Interfaces\CoronaVirus;
-use Shohag\Models\CoronaModel;
+use Shohag\Interfaces\LaraQLSerializer;
+use Shohag\Models\LaraQLModel;
 
-class Division extends CoronaModel implements CoronaVirus
+class Division extends LaraQLModel implements LaraQLSerializer
 {
 
     /**
@@ -34,7 +32,7 @@ class Division extends CoronaModel implements CoronaVirus
     protected $one2oneFields = [
         [
             'self_key' => 'country_id', // current table foreign key
-            'associate_with' => 'country', // request key
+            'associate_with' => 'country', // request field
             'relative_model' => Country::class // relative model 
         ]
     ];
@@ -74,7 +72,7 @@ class Division extends CoronaModel implements CoronaVirus
      * @param NULL
      * @return Array
      */
-    public function fieldsValidator()
+    public function fieldsValidator(): array
     {
         return [
             'name' => 'required',
@@ -86,7 +84,8 @@ class Division extends CoronaModel implements CoronaVirus
      * @param NULL
      * @return Array
      */
-    public function createSerializer() {
+    public function createSerializer(): array
+    {
         return [
             'direct_fields' => [
                 [
@@ -97,23 +96,38 @@ class Division extends CoronaModel implements CoronaVirus
             ]
         ];
     }
+    
+     /**
+     * @param NULL
+     * @return array
+     */
+    public function fieldMutation(): array
+    {
+        return [
+            [
+                'field' => 'name',
+                'method' => function($fieldValue) {
+                    return strtoupper($fieldValue);
+                }
+            ]
+        ];
+    }
 
 }
 ?>
 ```
 
-## Basic Controller Usage
+## Controller Usage
 ```php
 <?php
 
 namespace App\Http\Controllers;
 
 use App\Models\Division;
-use Shohag\Controllers\CoronaController;
+use Shohag\Controllers\LaraQLController;
 
-class DivisionController extends CoronaController
+class DivisionController extends LaraQLController
 {
-    // Model pass for dependacy injection purpose
     public function __construct(Division $division)
     {
         $this->EntityInstance = $division;
@@ -123,7 +137,7 @@ class DivisionController extends CoronaController
 
 ```
 
-## Basic Route Usage
+## Route Usage
 ```
 Route::resource('/divisions', 'DivisionController');
 
@@ -138,10 +152,37 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 
 ```
 
-## Documentation
+## Usage
 
--- Our API is ready to access so, in the below section will be describe how it will help us!.
+- [LaraQL](#laraql)
+  - [Installation:](#installation)
+  - [Usage:](#usage)
+	- [Model Usage](#model-usage)
+	- [Controller Usage](#controller-usage)
+	- [Route Usage](#route-usage)
+  - [Documentation:](#documentation)
+	- [Without Filter](#without-filter)
+	- [Filter](#filter)
+	  - [Single Filter](#single-filter)
+	  - [Multiple Filter](#multiple-filter)
+	  - [Like Filter](#like-filter)
+	  - [Between Filter](#between-Filter)
+	- [Query Fields](#query-fields)
+	  - [Foreignkey Fields](#foreignkey-fields)
+	- [Order By](#order-by)
+	- [Resource Post](#resource-post)
+	  - [Bulk Post](#bulk-post)
+	  - [One To One](#one-to-one)
+	  - [One To Many](#one-to-many)
+	- [Field Mutation](#field-mutation)
+  
+      
+      
 
+
+# Documentation
+
+# Without Filter
 * divisions GET `/api/divisions`
 * Response
 ```json
@@ -160,6 +201,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
+# Single Filter
 * divisions with single filter: GET `api/divisions?filters=country_id:2`
 * Response
 ```json
@@ -173,7 +215,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
+# Multiple Filter
 * divisions with multiple filter: GET `api/divisions?filters=country_id:2,name:Khulna`
 * Response
 ```json
@@ -187,6 +229,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
+# Like Filter
 * divisions like filter: GET `api/divisions?filters=country_id:2,like~name:ulna`
 * Response
 ```json
@@ -200,8 +243,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions like,queryFields filter: GET `/api/divisions?filters=country_id:1,like~name:khu&queryFields=id,name`
+# Query Fields
+* queryFields filter(only desire fields retrive): GET `/api/divisions?queryFields=id,name`
 * Response
 ```json
 {
@@ -213,8 +256,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions between filter: GET `/api/countries?filters=b2n_id:1-3`
+# Between Filter
+* between filter(range 1 to 3): GET `/api/countries?filters=b2n_id:1-3`
 * Response
 ```json
 {
@@ -234,8 +277,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions between filter with order_by: GET `/api/countries?filters=b2n_id:1-3&queryFields=id,name&order_by=asc`
+## Order By
+* filter with order_by: GET `/api/countries?filters=b2n_id:1-3&queryFields=id,name&order_by=asc`
 * Response
 ```json
 {
@@ -255,8 +298,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions like,queryFields with foreignkey filter: GET `/api/divisions?filters=country_id:1,name:Bangladesh&queryFields=id,name,county_id,country__name`
+### ForeignKey Fields
+* Foreignkey queryFields(desire foreignkey field retrive): GET `/api/divisions?queryFields=country__name`
 * Response
 ```json
 {
@@ -270,8 +313,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     ]
 }
 ```
-
-* divisions single resource create: POST: `/api/divisions`
+# Resource Post
+* new resource create: POST: `/api/divisions`
 * body
 ```json
 {
@@ -279,8 +322,8 @@ DELETE        /divisions/{id}              destroy divisions.destroy
     "company_id": 1,
 }
 ```
-
-* divisions bulk resource create: POST: `/api/divisions`
+# Bulk Post
+* new bulk resource create: POST: `/api/divisions`
 * body
 ```json
 {
@@ -297,7 +340,7 @@ DELETE        /divisions/{id}              destroy divisions.destroy
   ]
 }
 ```
-
+# One to one
 * division with country create(one to one relation data insert): POST: `/api/divisions`
 ### Before you do this make sure you removed country_id from validation method and added $one2oneFields property in model
 * body
@@ -310,8 +353,9 @@ DELETE        /divisions/{id}              destroy divisions.destroy
 }
 ```
 
+# One To Many
 * one to many data insert: POST: `/api/type`
-### Add this property in desire model 
+### Add $one2manyFields property in model 
 ```
 protected $one2manyFields = [
         [
@@ -350,12 +394,36 @@ protected $one2manyFields = [
         ]
     }
 }
-
+```
+# Field Mutation
+```php
+   /**
+   * @param NULL
+   * @return array
+   */
+    public function fieldMutation()
+    {
+        return [
+            [
+                'field' => 'code',
+                'method' => function($fieldValue) {
+                    return (int)$fieldValue;
+                }
+            ],
+            [
+                'field' => 'name',
+                'method' => function($fieldValue) {
+                    return strtoupper($fieldValue);
+                }
+            ]
+        ];
+    }
+```
 ### Author
 
 Fazlul Kabir Shohag - <shohag.fks@gmail.com>
 
 ### License
 
-Corona Generic API package is licensed under the MIT License
+LaraQL package is licensed under the MIT License
 
