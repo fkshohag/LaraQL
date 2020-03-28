@@ -69,6 +69,21 @@ class LaraQLController extends Controller
     }
 
     /**
+     * create a newly resource in storage.
+     *
+     * @param Request $request
+     * @return BaseResource
+     */
+    public function edit(Request $request, $id) {
+        $result = $this->EntityInstance::find($id);
+        if(method_exists($this->EntityInstance, 'createResource')) {
+            $options = $this->EntityInstance->createResource($request);
+            $result['options'] = $options;
+        }
+        return response()->json(['data' => $result], 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
