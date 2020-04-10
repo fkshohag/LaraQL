@@ -87,6 +87,16 @@ class LaraQLModel extends Model
                         if($cheker) {
                            return $cheker; 
                         } else {
+                            // Field resolver
+                            if(method_exists($newInstance, 'fieldMutation')) {
+                                $resolverFields = $newInstance->fieldMutation();
+                                foreach($resolverFields as $resolver) {
+                                    if(isset($field[$resolver['field']])) {
+                                        $field[$resolver['field']] = $resolver['method']($field[$resolver['field']]);
+                                    }
+                                }
+                            }
+                            
                             $r_fields = $newInstance->postSerializerFields();
                             foreach ($r_fields as $_field) {
                                 if(isset($field[$_field])) {
