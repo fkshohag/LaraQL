@@ -13,13 +13,15 @@ use Shohag\Utilitys\ModelUtility\QueryUtility;
 
 class LaraQLModel extends Model
 {
-    private $model;
     use QueryMixin, QueryUtility;
+    private $model;
+    protected $tableName;
 
     public $clientQueryFields = array();
 
     public function __construct(Model $model){
         $this->model = $model;
+        $this->tableName = $this->getTable();
     }
 
     public function createResource($request) {
