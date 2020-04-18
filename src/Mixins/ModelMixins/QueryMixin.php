@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Mixins\ModelMixins;
+namespace Shohag\Mixins\ModelMixins;
 
 /**
  * @author Md.Shohag <Shohag.fks@gmail.com>
  */
 
-trait ProtectedQueryMixin
+trait QueryMixin
 {
 
     private $paramFilters = '';
