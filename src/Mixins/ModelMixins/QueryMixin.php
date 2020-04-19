@@ -62,6 +62,24 @@ trait QueryMixin
         return (substr($string, -$len) === $endString);
     }
 
+    public function firstPatternMatching($string, $pattern): bool {
+        $len = strlen($string) - strlen($pattern);
+        $p_len = strlen($pattern);
+        for($i = 0; $i <= $len; $i++) {
+            $counter = 0;
+            for($j = $i; $j < $i+$p_len; $j++) {
+                if($string[$j] == $pattern[$counter]) {
+                    $counter++;
+                    if($counter == $p_len) return true;
+                    continue;
+                } else {
+                   break;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * @param query $querySet
      * @return query
