@@ -3,6 +3,7 @@
 namespace Shohag\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Shohag\Mixins\ModelMixins\QueryMixin;
 use Shohag\Utilitys\ModelUtility\QueryUtility;
@@ -24,6 +25,27 @@ class LaraQLModel extends Model
         $this->tableName = $this->getTable();
     }
 
+        /**
+     * @param int $resourcePerPage
+     * @param string $orderBy
+     * @return JsonResponse
+     * @throws \ReflectionException
+     */
+    function getAll($filter = null, $resourcePerPage = 10, $orderBy = 'DESC')
+    {
+        $querySet = $this->model::orderBy($this->tableName.'.id', $orderBy);
+        if($filter) {
+            $querySet = $this->appliedMullipleFilter($querySet, $filter);
+        }
+        return $querySet->paginate($resourcePerPage);
+    }
+
+    function getResourceById($id)
+    {
+        $resource = $this->model::find($id);
+        return $resource;
+    }
+
     public function createResource($request) {
         $serializerConfig = $this->createSerializer();
         $direct_fields = $serializerConfig['direct_fields'];
@@ -36,6 +58,31 @@ class LaraQLModel extends Model
             array_merge($query_result, $serializerConfig['other_fields']) : $query_result;
     }
 
+    public function bulkCreate($request) {
+        $EntityModel = $this->model;
+        $bulks = $request->bulks;
+        $tableName =  $EntityModel->getTable();
+        $ids = [];
+        if(!empty($bulks)) {
+            DB::beginTransaction();
+            foreach($bulks as $resource) {
+                $ids[] = DB::table($tableName)->insertGetId($resource);
+            }
+            DB::commit();
+        }
+        if($ids) {
+            return response()->json(['data' => $EntityModel::whereIn('id', $ids)->get()], 200);
+  
+        } else {
+            return response()->json(['data' => []], 200);
+        }
+    }
+
+    public function validatorChecker($_request, $v_fields) {
+        $validator = Validator::make($_request, $v_fields);
+        if ($validator->fails()) return response()->json(['errors' => $validator->messages()]);
+        return false;
+    }
 
     function storeResource($request) {
         $EntityModel = $this->model;
