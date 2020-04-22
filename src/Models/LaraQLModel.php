@@ -80,7 +80,7 @@ class LaraQLModel extends Model
 
     public function validatorChecker($_request, $v_fields) {
         $validator = Validator::make($_request, $v_fields);
-        if ($validator->fails()) return response()->json(['errors' => $validator->messages()]);
+        if ($validator->fails()) return response()->json(['errors' => $validator->messages()], 422);
         return false;
     }
 
@@ -104,14 +104,14 @@ class LaraQLModel extends Model
         if($request->bulks) {
             if(method_exists($EntityModel, 'fieldsValidator')) {
                 $validator = Validator::make($request->bulks[0], $EntityModel->fieldsValidator());
-                if ($validator->fails()) return response()->json(['errors' => $validator->messages()]);
+                if ($validator->fails()) return response()->json(['errors' => $validator->messages()], 422);
             }
             return $this->bulkCreate($request);
         }
 
         if(method_exists($EntityModel, 'fieldsValidator')) {
             $validator = Validator::make($request->all(), $EntityModel->fieldsValidator());
-            if ($validator->fails()) return response()->json(['errors' => $validator->messages()]);
+            if ($validator->fails()) return response()->json(['errors' => $validator->messages()], 422);
         }
     
         $resource = new $EntityModel();
@@ -199,7 +199,7 @@ class LaraQLModel extends Model
 
         if(method_exists($EntityModel, 'fieldsValidator')) {
             $validator = Validator::make($request->all(), $EntityModel->fieldsValidator());
-            if ($validator->fails()) return response()->json(['errors' => $validator->messages()]);
+            if ($validator->fails()) return response()->json(['errors' => $validator->messages()], 422);
         }
         foreach ($fields as $field) {
             if(isset($request->$field)) {
