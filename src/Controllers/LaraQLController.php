@@ -133,7 +133,7 @@ class LaraQLController extends Controller
         if($isDeleted) {
             return response()->json(['data' => 'Resource deleted successfully!'], 200);
         } else {
-            return response()->json(['data' => 'Resource not found!'], 200); 
+            return response()->json(['data' => 'Resource not found!'], 404); 
         }
     }
 }
