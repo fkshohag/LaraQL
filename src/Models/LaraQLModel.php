@@ -196,11 +196,7 @@ class LaraQLModel extends Model
         $resource = $EntityModel::find($id);
 
         if (empty($resource)) return response()->json(['message' => 'Resource not found'], 404);
-
-        if(method_exists($EntityModel, 'fieldsValidator')) {
-            $validator = Validator::make($request->all(), $EntityModel->fieldsValidator());
-            if ($validator->fails()) return response()->json(['errors' => $validator->messages()], 422);
-        }
+        
         foreach ($fields as $field) {
             if(isset($request->$field)) {
                 $resource->$field = $request->$field;
