@@ -194,8 +194,19 @@ class LaraQLModel extends Model
         $EntityModel = $this->model;
         $fields = $EntityModel->postSerializerFields();
         $resource = $EntityModel::find($id);
+        $requestFields = $request->all();
 
         if (empty($resource)) return response()->json(['message' => 'Resource not found'], 404);
+        
+        // Field resolver
+        if(method_exists($EntityModel, 'fieldMutation')) {
+            $resolverFields = $this->fieldMutation();
+            foreach($resolverFields as $resolver) {
+                if(isset($requestFields[$resolver['field']])) {
+                    $requestFields[$resolver['field']] = $resolver['method']($requestFields[$resolver['field']]);
+                }
+            }
+        }
         
         foreach ($fields as $field) {
             if(isset($request->$field)) {
