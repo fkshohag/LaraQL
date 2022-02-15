@@ -421,7 +421,6 @@ protected $one2manyFields = [
 ```
 ### Author
 
-Fazlul Kabir Shohag - <shohag.fks@gmail.com>
 
 ### License
 
